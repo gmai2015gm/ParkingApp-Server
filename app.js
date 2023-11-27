@@ -1,30 +1,24 @@
 /**
  * The Questions:
- * --Do we need sessions? I think not. Mostly because IDK 
- *   how we would do that in-app.
- * 
- * --What all are we storing in the thing? Users, Parking Lots, 
- *   and ratings (With references for each user and PL)
- * 
- * --What are our ratings....? Is it out of ten? Is it an enum?
- * 
- * --Do we need to store the businesses or just the parking lot themselves?
- * 
+ * --Do we need sessions? I don't know. Mostly because IDK 
+ *   how we would do that in-app. - G
  */
 
 /**
  * JSON DICTIONARY (Proposed)
  * 
  * Object: Rating
+ * -User who rated the lot
  * -Who's parking lot [String/Business in DB?]
- * -cleanliness/"will this lot mess up your car" [Scale of one to ten (1="A constant state of disrepair" && 10="Absolutely Perfect")]
- * -safety/"do people tend to drive like crazy people" [Scale of one to ten (1="Very safe" && 10="Leave ASAP.")]
- * -general availibility (How are we quantifying this?)
- * -current availibility (How are we quantifying this?)
+ * -cleanliness [Scale of one to ten (1="A constant state of disrepair" && 10="Absolutely Perfect")]
+ * -safety/"do people tend to drive like crazy people" [Scale of one to ten (1="Leave ASAP." && 10="Very safe")]
+ * -current availibility (How are we quantifying this?) [Scale of one to ten (]
  * -Timestamp [datetime]
+ * -Notes [String (2000 chars?)]
  * 
  * Object: User
- * -UserName [string]
+ * -userName [string]
+ * -email [string]
  * -password [hashed string]
  * 
  * Object: Parking lot
@@ -32,12 +26,13 @@
  * -Latitude (Approx)
  * -Longitude (Approx)
  * -(virtual) ratingsArray
- * -Average cleanliness rating [Double]
- * -current availibility (Varies on how we quantify, But we would have an alg in place
- *                        that could take an average based on the timestamp of the rating.
- *                        Like if they fall into a certain timeframe of the query time it 
- *                        recalculates this value.)
- * -Average availibility rating
+ * -Average cleanliness rating [Double] 
+ * -Average availibility rating [Double]
+ * 
+ * Pending investigation
+ * -Num of spots
+ * -Type of spots
+ * -Paid?
  */
 
 const express = require('express')
@@ -53,10 +48,10 @@ const userRouter = require('./routers/user')
 app.listen(process.env.PORT)
 console.log("Starting server on Port 3000")
 
-/* Express Configuration and Setup */
+//Express Configuration and Setup
 app.use(express.urlencoded({extended:true})); 
 
-/* Mongoose 6.10.0 Config and Setup */
+//Mongoose Setup
 const mongoURL = process.env.MONGO_URL
 mongoose.connect(mongoURL,{ useNewUrlParser: true, useUnifiedTopology: true},(err)=>{
     if(err)
