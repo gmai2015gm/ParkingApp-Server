@@ -6,13 +6,22 @@ const authenticateUser = require('../middleware/authenticateUser')
 const router = express.Router()
 
 //For a user to sign up
-router.post('/register',async (req,res)=>{
+router.post('/register',async (req,res)=>{ 
+     /**
+      * Example of request body
+      * {
+      *     userName:"check123",
+      *     email:"check@gmail.com",
+      *     password:"password12345"
+      * }
+      */
+
     //Grab the body of the request
     const user = new User(req.body)
     try
     {
         //Store the hashed password
-         const hashedPW = await bcrypt.hash(user.password,8)
+         const hashedPW = await bcrypt.hash(user.password,process.env.BCRYPTNUM)
          user.password = hashedPW
 
          //Save the user
@@ -34,42 +43,52 @@ router.post('/register',async (req,res)=>{
  })
  
  router.post('/login',async (req,res)=>{
+     /**
+      * Example of request body (NEEDS CONFIRMED)
+      * {
+      *     email:"check@gmail.com",
+      *     password:"password12345"
+      * }
+      */
+
     //This is an error object that could be sent in multiple situations
     let authErr = {success:0, message:"Invalid Credentials. Please try again."}
 
      try
      {
         //Find the user
-         const user = await User.findOne({username:req.body.username})
-         if(!user)
-         { 
-            //If the user isn't there, lets get out of here  
-            console.log("Auth error")
-            return res.send(authErr)
-         }
+        const user = await User.findOne({email:req.body.email})
+        if(!user)
+        { 
+           //If the user isn't there, lets get out of here  
+           console.log("Auth error")
+           return res.send(authErr)
+        }
  
-         const isMatch = await bcrypt.compare(req.body.password,user.password)
-         if(!isMatch)
-         {
-            //If the password doesn't match, we have a problem, so leave the situation.
-            console.log("Auth error")
-            return res.send(authErr)
-         }
-         req.session.user_id = user._id
+        const isMatch = await bcrypt.compare(req.body.password,user.password)
+        if(!isMatch)
+        {
+           //If the password doesn't match, we have a problem, so leave the situation.
+           console.log("Auth error")
+           return res.send(authErr)
+        }
+        req.session.user_id = user._id
         return res.send({success:1})
 
  
-     } catch(err){
-         console.log("Login error")
-        //  res.redirect('/')
+     } 
+     catch(err)
+     {
+        console.log("Login error")
         return res.send({success:0, message:"Could not login.", error:err})
      }
  })
  
  router.post('/logout',authenticateUser,(req,res)=>{
-     req.session.destroy(()=>{
-         console.log('Logged out successfully')
-         return res.send({success:1})
+     req.session.destroy(()=>
+     {
+        console.log('Logged out successfully')
+        return res.send({success:1})
      })
  })
 

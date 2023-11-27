@@ -43,6 +43,8 @@ require('dotenv').config()
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 const userRouter = require('./routers/user')
+const parkingLotRouter = require('./routers/parkingLot')
+const ratingRouter = require('./routers/rating')
 
 
 app.listen(process.env.PORT)
@@ -71,6 +73,8 @@ app.use(session({
 }))
 
 app.use(userRouter)
+app.use(parkingLotRouter)
+app.use(ratingRouter)
 
 /* Basic 404 response*/
 app.get('/*',(req,res)=>{
