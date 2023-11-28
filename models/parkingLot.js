@@ -16,18 +16,21 @@ const ParkingLotSchema = mongoose.Schema({
     },
     avgCleanliness:{
         type:mongoose.Schema.Types.Number,
-        min:1,
-        max:10
+        min:0,
+        max:10,
+        default:0
     },
     avgSafety:{
         type:mongoose.Schema.Types.Number,
-        min:1,
-        max:10
+        min:0,
+        max:10,
+        default:0
     },
     avgAvailibility:{
         type:mongoose.Schema.Types.Number,
-        min:1,
-        max:10
+        min:0,
+        max:10,
+        default:0
     }
 })
 
