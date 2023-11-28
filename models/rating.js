@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
 
 const RatingSchema = mongoose.Schema({
-    user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
+    username:{
+        type:mongoose.Schema.Types.String
     },
     parkingLot:{
         type:mongoose.Schema.Types.ObjectId,
@@ -19,7 +18,7 @@ const RatingSchema = mongoose.Schema({
         min:1,
         max:10
     },
-    availibility:{
+    availability:{
         type:mongoose.Schema.Types.Number,
         min:1,
         max:10

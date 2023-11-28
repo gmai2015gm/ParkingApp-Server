@@ -97,6 +97,10 @@ router.post('/register',async (req,res)=>{
      })
  })
 
+ router.get(`/allUsers`, async (req,res) => {
+      res.send(await User.find({}))
+ })
+
  module.exports = router
 
  

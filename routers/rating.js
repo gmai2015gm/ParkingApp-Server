@@ -9,17 +9,38 @@ router.post(`/ratings/add`, async (req, res)=>{
     /**
       * Example of request body
       * {
-      *     "UserName":"check123",
-      *     "ParkinglotID":3456789012
-      *     "Cleanliness":8
-      *     "Safety":9
-      *     "Availibility":1
-      *     "Notes": "This is a nice lot but everyone knows it so it's always full"
+      *     "username":"check123",
+      *     "parkingLot":"656570fa7cc587a01cc864f8"
+      *     "cleanliness":8
+      *     "safety":9
+      *     "availability":1
+      *     "notes": "This is a nice lot but everyone knows it so it's always full"
       * }
       */
-    console.log(req.body)
 
-    res.send({success:1,message:"Adding rating..."})
+    try 
+    {
+      const lot = await ParkingLot.findById(req.body.parkingLot)
+      const user = await User.find({username:req.body.username})
+
+      if (lot && user)
+      {
+        const rating = new Rating(req.body)
+        const i = await rating.save()
+        res.send({success:1})
+      }
+      else
+      {
+        res.send({success:0,message:"Either the lot or the user does not exist."})
+      }
+      
+    } 
+    catch (err) 
+    {
+      res.send({success:0,message:"Unable to add rating.", error:err})
+    }
+
+    
 });
 
 router.delete(`/ratings/delete`, async (req, res)=>{
@@ -31,14 +52,44 @@ router.delete(`/ratings/delete`, async (req, res)=>{
      * 
       * Example of request body
       * {
-      *     "RequestorID": 1234567890
-      *     "RatingID": 3456789012
+      *     "requestorID": "1234567890"
+      *     "ratingID": "3456789012"
       * }
       */
 
-    console.log(req.body)
+    try 
+    {
+      //Grab the rating and the requestor
+      const rating = await Rating.findById(req.body.ratingID)
+      const requestor = await User.findById(req.body.requestorID)
 
-    res.send({success:1,message:"Deleting rating..."})
+      if(!rating)
+      {
+        return res.send({success:0,message:"Rating doesn't exist"})
+      }
+
+      if(rating.username === requestor.username)
+      {
+        const d = await Rating.deleteOne({id:rating.id})
+        // console.log(d)
+
+        if(d && d.acknowledged && deletedCount >= 1)
+        {
+          res.send({success:1})
+        }
+        else res.send({success:0, message:"Cannot delete."})
+      }
+      else
+      {
+        res.send({success:0,message:"You cannot delete this rating."})
+      }
+    }
+    catch (err)
+    {
+      res.send({success:0,message:"Cannot delete rating.", error:err})
+    }
+
+    
 });
 
 router.get(`/ratings/get/:ratingID`, async (req, res)=>{
