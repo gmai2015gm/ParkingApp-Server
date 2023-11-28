@@ -13,7 +13,7 @@ router.post(`/lots/add`, async (req, res)=>{
       * }
       */
 
-    res.send("Adding lot...")
+    res.send({success:1,message:"Adding lot..."})
 });
 
 router.post(`/lots/delete`, async (req, res)=>{
@@ -24,7 +24,7 @@ router.post(`/lots/delete`, async (req, res)=>{
       * }
       */
 
-    res.send("Deleting lot...")
+    res.send({success:1,message:"Deleting lot..."})
 });
 
 router.get(`/lots/get`, async (req, res)=>{
@@ -35,7 +35,7 @@ router.get(`/lots/get`, async (req, res)=>{
       * }
       */
 
-    res.send("Returning lot...")
+    res.send({success:1,message:"Returning lot..."})
 });
 
 router.get(`/lots/search`, async (req, res)=>{
@@ -44,7 +44,7 @@ router.get(`/lots/search`, async (req, res)=>{
       * - searchString : a string
       */
 
-    res.send("Searching lot...")
+    res.send({success:1,message:"Searching lot..."})
 });
 
 module.exports = router
