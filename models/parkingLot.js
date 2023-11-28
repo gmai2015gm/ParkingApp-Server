@@ -1,9 +1,19 @@
 const mongoose = require('mongoose')
 
 const ParkingLotSchema = mongoose.Schema({
-    entryName:{type:mongoose.Schema.Types.String},
-    latitude:{type:mongoose.Schema.Types.Number},
-    longitude:{type:mongoose.Schema.Types.Number},
+    entryName:{
+        type:mongoose.Schema.Types.String,
+        required:true,
+        unique:true
+    },
+    latitude:{
+        type:mongoose.Schema.Types.Number,
+        required:true
+    },
+    longitude:{
+        type:mongoose.Schema.Types.Number,
+        required:true
+    },
     avgCleanliness:{
         type:mongoose.Schema.Types.Number,
         min:1,

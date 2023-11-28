@@ -52,6 +52,7 @@ console.log("Starting server on Port 3000")
 
 //Express Configuration and Setup
 app.use(express.urlencoded({extended:true})); 
+app.use(express.json())
 
 //Mongoose Setup
 const mongoURL = process.env.MONGO_URL

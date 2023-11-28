@@ -13,38 +13,45 @@ router.post(`/lots/add`, async (req, res)=>{
       * }
       */
 
+    console.log(req.body)
+
     res.send({success:1,message:"Adding lot..."})
 });
 
-router.post(`/lots/delete`, async (req, res)=>{
+router.delete(`/lots/delete`, async (req, res)=>{
     /**
       * Example of request body
       * {
-      *     _id:(The objectID)
+      *     id:(The objectID)
       * }
       */
+
+
 
     res.send({success:1,message:"Deleting lot..."})
 });
 
-router.get(`/lots/get`, async (req, res)=>{
-    /**
-      * Example of request body
-      * {
-      *     _id:(The objectID)
-      * }
-      */
-
-    res.send({success:1,message:"Returning lot..."})
-});
 
 router.get(`/lots/search`, async (req, res)=>{
     /**
       * Query needs to contain:
       * - searchString : a string
       */
+    
+    console.log(req.query)
 
     res.send({success:1,message:"Searching lot..."})
+});
+
+
+router.get(`/lots/:lotID`, async (req, res)=>{
+    /**
+      * Example of params
+      * -lotID : the object ID of the lot
+      */
+    console.log(req.params)
+
+    res.send({success:1,message:"Returning lot..."})
 });
 
 module.exports = router

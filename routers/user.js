@@ -1,7 +1,6 @@
 
 const express = require('express')
 const User = require('../models/user')
-const bcrypt = require('bcrypt')
 const authenticateUser = require('../middleware/authenticateUser')
 const router = express.Router()
 
@@ -10,36 +9,19 @@ router.post('/register',async (req,res)=>{
      /**
       * Example of request body
       * {
-      *     userName:"check123",
-      *     email:"check@gmail.com",
-      *     password:"password12345" [Hashed by app]
+      *     "userName":"check123",
+      *     "email":"check@gmail.com",
+      *     "password":"password12345" [Hashed by app]
       * }
       */
 
-    //Grab the body of the request
+     console.log("Register request received...")
+
+    //Grab the body of the request and turn it into a user
     const user = new User(req.body)
+
     try
     {
-        //Ensure that username and email are not in system
-        let userByName = await User.findOne({username:req.body.loginName})
-        let userByEmail = await User.findOne({email:req.body.loginName})
-
-        if (userByName)
-        {
-            console.log("Auth Error: A new user just tried to create an account with an existing username.")
-            return res.send({success:0, message: "Username already exists in system."})
-        }
-
-        if (userByEmail)
-        {
-            console.log("Auth Error: A new user just tried to create an account with an existing email.")
-            return res.send({success:0, message: "Email already exists in system."})
-        }
-
-      //   //Store the hashed password
-      //    const hashedPW = await bcrypt.hash(user.password,process.env.BCRYPTNUM)
-      //    user.password = hashedPW
-
          //Save the user
          const u = await user.save()
 
@@ -62,8 +44,8 @@ router.post('/register',async (req,res)=>{
      /**
       * Example of request body
       * {
-      *     loginName:"check@gmail.com" [this could be email or username],
-      *     password:"password12345" [This will be hashed]
+      *     "loginName":"check@gmail.com" [this could be email or username],
+      *     "password":"password12345" [This will be hashed]
       * }
       */
 
@@ -97,6 +79,7 @@ router.post('/register',async (req,res)=>{
            return res.send(authErr)
         }
         req.session.user_id = user._id
+        console.log("Successful Login")
         return res.send({success:1})
      } 
      catch(err)

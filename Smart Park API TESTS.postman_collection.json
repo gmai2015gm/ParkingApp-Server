@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "50883039-4b4c-4e60-bf09-8185e8a5ca6f",
+		"name": "Smart Park API TESTS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26506498"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"loginName\": \"check@gmail.com\",\r\n    \"password\": \"password12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:3000/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"check123\",\r\n    \"email\": \"check@gmail.com\",\r\n    \"password\": \"password12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:3000/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "localhost:3000/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Parking Lot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"entryName\": \"Random Lot #425\",\r\n    \"latitude\": 36.2456789,\r\n    \"longitude\": 48.3217895\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:3000/lots/add"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Parking Lot",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "localhost:3000/lots/delete"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific Lot",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/lots/123456"
+			},
+			"response": []
+		},
+		{
+			"name": "Search All Lots",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/lots/search?term=Random",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"lots",
+						"search"
+					],
+					"query": [
+						{
+							"key": "term",
+							"value": "Random"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add A New Rating",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"UserName\":\"check123\",\r\n      \"ParkinglotID\":3456789012,\r\n      \"Cleanliness\":8,\r\n      \"Safety\":9,\r\n      \"Availibility\":1,\r\n      \"Notes\": \"This is a nice lot but everyone knows it so it's always full\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:3000/ratings/add"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific Rating",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/ratings/get/123"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Ratings for a Lot",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/ratings/getAll/123456"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a rating",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"RequestorID\": 1234567890,\r\n\"RatingID\": 3456789012\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:3000/ratings/delete"
+			},
+			"response": []
+		}
+	]
+}
