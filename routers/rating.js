@@ -5,6 +5,41 @@ const ParkingLot = require('../models/parkingLot')
 const authenticateUser = require('../middleware/authenticateUser')
 const router = express.Router()
 
+async function calculateLotStates(lot)
+{
+  console.log("Calculating lot stats...")
+
+  //Grab all our ratings
+  const ratings = await Rating.find({parkingLot:lot.id})
+
+  //Calculate each average
+  let avgCleanliness = 0
+  let avgSafety = 0
+  let avgAvailability = 0
+
+  ratings.forEach(rating => {
+    avgCleanliness += rating.cleanliness
+    avgSafety += rating.safety
+    avgAvailability += rating.availability
+  });
+
+  avgCleanliness = avgCleanliness / ratings.length //7.3333
+  avgSafety = avgSafety / ratings.length //8.6666
+  avgAvailability = avgAvailability / ratings.length //1.3333
+
+  //Set the average and save the lot
+  console.log("Averages calculated.")
+  console.log("Updateing lot....")
+
+  lot.avgCleanliness = avgCleanliness
+  lot.avgSafety = avgSafety
+  lot.avgAvailability = avgAvailability
+
+  const s = await lot.save()
+
+  console.log("Lot Updated.")
+}
+
 router.post(`/ratings/add`, async (req, res)=>{
     /**
       * Example of request body
@@ -18,24 +53,39 @@ router.post(`/ratings/add`, async (req, res)=>{
       * }
       */
 
+    console.log("Add rating Request Received.")
+
     try 
     {
+      console.log("Finding user and lot...")
+
       //get the lot and the user
-      const lot = await ParkingLot.findById(req.body.parkingLot)
+      const lot = await ParkingLot.findById(req.body.parkingLot).populate("ratings")
       const user = await User.find({username:req.body.username})
 
       //If they both exist, send the appropriate response
       if (lot && user)
       {
+        console.log("User and lot found.")
+        console.log("Saving rating...")
+
         const rating = new Rating(req.body)
         const i = await rating.save()
         res.send({success:1})
+
+        console.log("Rating saved.")
+
+        calculateLotStates(lot)
       }
       else
+      {
+        console.log("Could not add rating. Lot doesn't exist.")
         res.send({success:0,message:"Either the lot or the user does not exist."})
+      }
     } 
     catch (err) 
     {
+      console.log("Sent to user: " + {success:0,message:"Unable to add rating.", error:err})
       res.send({success:0,message:"Unable to add rating.", error:err})
     }
 
