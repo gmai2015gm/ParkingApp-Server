@@ -5,7 +5,7 @@ const ParkingLot = require('../models/parkingLot')
 const authenticateUser = require('../middleware/authenticateUser')
 const router = express.Router()
 
-router.post(`/lots/add`, async (req, res)=>{
+router.post(`/lots/add`,authenticateUser, async (req, res)=>{
     /**
       * Example of request body
       * {
@@ -30,7 +30,7 @@ router.post(`/lots/add`, async (req, res)=>{
     }
 });
 
-router.delete(`/lots/delete/:lotID`, async (req, res)=>{
+router.delete(`/lots/delete/:lotID`,authenticateUser, async (req, res)=>{
     /**
       * Example of request body
       * {
@@ -58,7 +58,7 @@ router.delete(`/lots/delete/:lotID`, async (req, res)=>{
 });
 
 
-router.get(`/lots/search`, async (req, res)=>{
+router.get(`/lots/search`,authenticateUser, async (req, res)=>{
     /**
       * Query needs to contain:
       * - term : a string
@@ -80,7 +80,7 @@ router.get(`/lots/search`, async (req, res)=>{
     
 });
 
-router.get(`/lots`, async (req, res)=>{
+router.get(`/lots`,authenticateUser, async (req, res)=>{
 
   const l = await ParkingLot.find({})
 
@@ -99,7 +99,7 @@ router.get(`/lots`, async (req, res)=>{
   res.send({success:0, message:"Found Nothing"})  
 });
 
-router.get(`/lots/:lotID`, async (req, res)=>{
+router.get(`/lots/:lotID`,authenticateUser, async (req, res)=>{
     /**
       * Example of params
       * -lotID : the object ID of the lot
