@@ -80,7 +80,5 @@ app.use(ratingRouter)
 /* Basic 404 response*/
 app.get('/*',(req,res)=>{
     res.status(404)
-    res.type('txt')
-    res.write("Oops, this page does not exist")
-    res.send()
+    res.send({status:404,message:"Not all who wander are lost, but you may be."})
 })
