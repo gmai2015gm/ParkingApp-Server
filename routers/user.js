@@ -29,7 +29,7 @@ router.post('/register',async (req,res)=>{
          req.session.user_id = u._id
 
          //Send the success code
-         res.send({success:1})
+         res.send({success:1, sessionID:req.session.id})
  
     }
     catch(err)
@@ -71,16 +71,19 @@ router.post('/register',async (req,res)=>{
            }
         }
  
-        const isMatch = (user.password === req.body.password)//await bcrypt.compare(req.body.password,user.password)
+        const isMatch = (user.password === req.body.password)
         if(!isMatch)
         {
            //If the password doesn't match, we have a problem, so leave the situation.
            console.log("Auth error: Invalid Login")
            return res.send(authErr)
         }
+
+        //Store the user id in the session
         req.session.user_id = user._id
+
         console.log("Successful Login")
-        return res.send({success:1})
+        return res.send({success:1, sessionID:req.session.id})
      } 
      catch(err)
      {
@@ -98,7 +101,9 @@ router.post('/register',async (req,res)=>{
  })
 
  router.get(`/allUsers`, async (req,res) => {
-      res.send(await User.find({}))
+      //Grab them all and return them without the password
+      const allUsers = await User.find({})
+      res.send(allUsers.map((u) => {return {id:u._id, username:u.username, email:u.email}}))
  })
 
  module.exports = router

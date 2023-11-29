@@ -20,9 +20,11 @@ router.post(`/ratings/add`, async (req, res)=>{
 
     try 
     {
+      //get the lot and the user
       const lot = await ParkingLot.findById(req.body.parkingLot)
       const user = await User.find({username:req.body.username})
 
+      //If they both exist, send the appropriate response
       if (lot && user)
       {
         const rating = new Rating(req.body)
@@ -30,10 +32,7 @@ router.post(`/ratings/add`, async (req, res)=>{
         res.send({success:1})
       }
       else
-      {
         res.send({success:0,message:"Either the lot or the user does not exist."})
-      }
-      
     } 
     catch (err) 
     {
@@ -63,33 +62,29 @@ router.delete(`/ratings/delete`, async (req, res)=>{
       const rating = await Rating.findById(req.body.ratingID)
       const requestor = await User.findById(req.body.requestorID)
 
+      //If the rating doesn't exist, let the user know.
       if(!rating)
-      {
         return res.send({success:0,message:"Rating doesn't exist"})
-      }
-
+      
+      //Make sure that the user that is trying to delete the rating
+      //is the one who made it.
       if(rating.username === requestor.username)
       {
+        //Delete it, check out the acknoledgement and ship out the appropriate response.
         const d = await Rating.deleteOne({id:rating.id})
-        // console.log(d)
 
         if(d && d.acknowledged && deletedCount >= 1)
-        {
           res.send({success:1})
-        }
-        else res.send({success:0, message:"Cannot delete."})
+        else 
+          res.send({success:0, message:"Cannot delete."})
       }
       else
-      {
         res.send({success:0,message:"You cannot delete this rating."})
-      }
     }
     catch (err)
     {
       res.send({success:0,message:"Cannot delete rating.", error:err})
     }
-
-    
 });
 
 router.get(`/ratings/get/:ratingID`, async (req, res)=>{
@@ -99,10 +94,16 @@ router.get(`/ratings/get/:ratingID`, async (req, res)=>{
       * 
       * Returns Individual Rating
       */
-
-    console.log(req.params)
-
-    res.send({success:1,message:"Returning rating..."})
+    try
+    {
+      //Find the one at the ID. 
+      const rating = await Rating.findById(req.params.ratingID)
+      res.send({success:1,rating:rating})
+    } 
+    catch (err) 
+    {
+      res.send({success:0,message:"Could not find rating...", error:err})
+    }
 });
 
 router.get(`/ratings/getAll/:lotID`, async (req, res) => {
@@ -113,9 +114,18 @@ router.get(`/ratings/getAll/:lotID`, async (req, res) => {
       * Returns array of Ratings objects
       */
 
-    console.log(req.params)
+    try 
+    {
+      //Find all of them with the given lot
+      const allRatings = await Rating.find({parkingLot:req.params.lotID})
+      res.send({success:1,ratings:allRatings})
+    }
+    catch (err) 
+    {
+      res.send({success:0,message:"Something went wrong", error:err})
+    }
 
-    res.send({success:1,message:"Returning all the ratings for this ID:..."})
+    
 })
 
 module.exports = router

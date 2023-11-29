@@ -1,4 +1,6 @@
 const express = require('express')
+const User = require('../models/user')
+const Rating = require('../models/rating')
 const ParkingLot = require('../models/parkingLot')
 const authenticateUser = require('../middleware/authenticateUser')
 const router = express.Router()
@@ -36,6 +38,8 @@ router.delete(`/lots/delete/:lotID`, async (req, res)=>{
       * }
       */
 
+    const r = await Rating.deleteMany({parkingLot:req.params.lotID})
+
     //Try to delete the thing
     const d = await ParkingLot.deleteOne({_id:req.params.lotID})
 
@@ -65,7 +69,7 @@ router.get(`/lots/search`, async (req, res)=>{
     {
       //Return the thing
       const results = await ParkingLot.find({entryName:{$regex : req.query.term}})
-      res.send(results)
+      res.send({success:1, results:results})
     } 
     catch (err) 
     {
@@ -85,7 +89,7 @@ router.get(`/lots`, async (req, res)=>{
     if(l.length > 0) //Make sure that there are actual items there.
     {
       //Send it back
-      res.send(l)
+      res.send({success:1, lots:l})
       return
     }
   }
@@ -105,7 +109,7 @@ router.get(`/lots/:lotID`, async (req, res)=>{
     {
       //Find the lot
       const l = await ParkingLot.findById(req.params.lotID)
-      res.send(l)
+      res.send({success:1, lot:l})
     } 
     catch (err) 
     {
