@@ -28,8 +28,7 @@ const RatingSchema = mongoose.Schema({
         maxLength:2000
     },
     timestamp: { 
-        type : Date,
-        default: Date.now
+        type:mongoose.Schema.Types.String
     }
 })
 
