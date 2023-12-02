@@ -93,7 +93,7 @@ router.post(`/ratings/add`, async (req, res)=>{
         const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
 
-        rating.timestamp = formattedDateTime
+        rating.timestamp = timestamp
         const i = await rating.save()
         res.send({success:1})
 
