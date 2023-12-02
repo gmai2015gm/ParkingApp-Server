@@ -73,8 +73,9 @@ router.post(`/ratings/add`, async (req, res)=>{
 
         //Manually do our timestamp
         const timeAlloted = Date.now()
-        const timestamp = new Date(timeAlloted).toUTCString().replace(",", "")
+        const timestamp = new Date(timeAlloted).toLocaleString().replace(",", "")
         
+        console.log(timestamp)
         const len = timestamp.length  
 
         rating.timestamp = timestamp.substring(4, len)
