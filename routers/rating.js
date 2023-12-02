@@ -73,11 +73,27 @@ router.post(`/ratings/add`, async (req, res)=>{
 
         //Manually do our timestamp
         const timeAlloted = Date.now()
-        const timestamp = new Date(timeAlloted).toLocaleString().replace(",", "")
-        
-        console.log(timestamp)
+        const timestamp = new Date(timeAlloted)
 
-        rating.timestamp = timestamp
+        console.log(timestamp)
+        
+        const formattedDate = timestamp.toLocaleDateString('en-US', {
+          month: 'numeric',
+          day: 'numeric',
+          year: 'numeric',
+        });
+      
+        const formattedTime = timestamp.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          hour12: true,
+        });
+      
+        const formattedDateTime = `${formattedDate} ${formattedTime}`;
+
+
+        rating.timestamp = formattedDateTime
         const i = await rating.save()
         res.send({success:1})
 
