@@ -31,7 +31,7 @@ router.post('/register',async (req,res)=>{
          console.log(`New user added!`)
 
          //Send the success code
-         res.send({success:1, sessionID:req.session.id})
+         res.send({success:1, sessionID:req.session.id, username: user.username})
  
     }
     catch(err)
@@ -85,7 +85,7 @@ router.post('/register',async (req,res)=>{
         req.session.user_id = user._id
 
         console.log("Successful Login")
-        return res.send({success:1, sessionID:req.session.id})
+        return res.send({success:1, sessionID:req.session.id, username: user.username})
      } 
      catch(err)
      {
