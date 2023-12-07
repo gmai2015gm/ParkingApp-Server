@@ -28,6 +28,8 @@ router.post('/register',async (req,res)=>{
          //Put the id in the session
          req.session.user_id = u._id
 
+         console.log(`New user added!`)
+
          //Send the success code
          res.send({success:1, sessionID:req.session.id})
  
@@ -93,6 +95,8 @@ router.post('/register',async (req,res)=>{
  })
  
  router.post('/logout',authenticateUser,(req,res)=>{
+   console.log("Attempting to logout....")
+   console.log(req.session)
      req.session.destroy(()=>
      {
         console.log('Logged out successfully')
