@@ -55,7 +55,7 @@ router.post('/register',async (req,res)=>{
      try
      {
         //Find the user by email
-        const user = await User.findOne({email:req.body.loginName})
+        let user = await User.findOne({email:req.body.loginName})
         if(!user)
         { 
            //If the user isn't there, lets get out of here  
