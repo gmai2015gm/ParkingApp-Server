@@ -5,7 +5,7 @@ const authenticateUser = require('../middleware/authenticateUser')
 const router = express.Router()
 
 //For a user to sign up
-router.post('/register',authenticateUser,async (req,res)=>{ 
+router.post('/register',async (req,res)=>{ 
      /**
       * Example of request body
       * {
@@ -42,7 +42,7 @@ router.post('/register',authenticateUser,async (req,res)=>{
  
  })
  
- router.post('/login',authenticateUser,async (req,res)=>{
+ router.post('/login',async (req,res)=>{
      /**
       * Example of request body
       * {
