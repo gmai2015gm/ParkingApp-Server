@@ -5,7 +5,7 @@ const authenticateUser = require('../middleware/authenticateUser')
 const router = express.Router()
 
 //For a user to sign up
-router.post('/register',async (req,res)=>{ 
+router.post('/register',authenticateUser,async (req,res)=>{ 
      /**
       * Example of request body
       * {
@@ -42,7 +42,7 @@ router.post('/register',async (req,res)=>{
  
  })
  
- router.post('/login',async (req,res)=>{
+ router.post('/login',authenticateUser,async (req,res)=>{
      /**
       * Example of request body
       * {
@@ -104,7 +104,7 @@ router.post('/register',async (req,res)=>{
      })
  })
 
- router.get(`/allusers`, async (req,res) => {
+ router.get(`/allusers`,authenticateUser, async (req,res) => {
       //Grab them all and return them without the password
       const allUsers = await User.find({})
       res.send(allUsers.map((u) => {return {id:u._id, username:u.username, email:u.email}}))

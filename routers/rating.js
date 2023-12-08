@@ -40,7 +40,7 @@ async function calculateLotStates(lot)
   console.log("Lot Updated.")
 }
 
-router.post(`/ratings/add`, async (req, res)=>{
+router.post(`/ratings/add`,authenticateUser, async (req, res)=>{
     /**
       * Example of request body
       * {
@@ -92,7 +92,7 @@ router.post(`/ratings/add`, async (req, res)=>{
     
 });
 
-router.delete(`/ratings/delete`, async (req, res)=>{
+router.delete(`/ratings/delete`,authenticateUser, async (req, res)=>{
     /**
      * DO WE NEED THIS?
      * -Maybe they should have to be authenticated before they delete it.
@@ -137,7 +137,7 @@ router.delete(`/ratings/delete`, async (req, res)=>{
     }
 });
 
-router.get(`/ratings/get/:ratingID`, async (req, res)=>{
+router.get(`/ratings/get/:ratingID`,authenticateUser, async (req, res)=>{
     /**
       * Query includes
       * ratingID = Object ID of the rating
@@ -156,7 +156,7 @@ router.get(`/ratings/get/:ratingID`, async (req, res)=>{
     }
 });
 
-router.get(`/ratings/getAll/:lotID`, async (req, res) => {
+router.get(`/ratings/getAll/:lotID`,authenticateUser, async (req, res) => {
     /**
       * Params includes
       * lotID = Object ID of the the parking lot that we're grabbing ratings for
